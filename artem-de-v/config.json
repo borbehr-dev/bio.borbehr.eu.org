@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "artem-de-v",
+    "description": "",
+    "themeColor": "#000000"
+  },
+  "profile": {
+    "username": "artem-de-v",
+    "avatarUrl": "https://github.com/artem-de-v.png",
+    "badge": {
+      "iconUrl": "https://img.icons8.com/?size=100&id=Fy1Wsu3YUrkT&format=png&color=000000",
+      "tooltip": "Friend"
+    }
+  },
+  "audio": {
+    "src": "https://files.catbox.moe/twwxqt.mp3",
+    "volume": 0.3
+  }
+}

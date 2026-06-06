@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000" id="meta-theme">
+    <meta property="og:title" content="" id="meta-og-title" />
+    <meta property="og:description" content="" id="meta-og-desc" />
+    <title id="site-title"></title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            overflow: hidden;
+        }
+
+        #enter-screen {
+            position: fixed;
+            inset: 0;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.8s ease;
+        }
+
+        #enter-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #enter-text {
+            color: white;
+            font-size: 2rem;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: white;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10;
+        }
+
+        .card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .info {
+            flex: 1;
+            color: white;
+            text-align: center;
+        }
+
+        .name-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .crown-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .crown-icon {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+            transition: transform 0.25s ease;
+        }
+
+        .crown-wrapper:hover .crown-icon {
+            transform: scale(1.15) rotate(-8deg);
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 140%;
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.35rem 0.6rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .crown-wrapper:hover .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .now-playing {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .link-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .link-icon img {
+            width: 26px;
+            height: 26px;
+        }
+
+        .link-icon:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+        }
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="enter-screen">
+        <div id="enter-text">click to enter</div>
+    </div>
+
+    <audio id="bg-music" loop></audio>
+
+    <div class="container">
+        <div class="card" id="card">
+            <img src="" id="profile-pic" class="profile-pic" alt="Avatar">
+
+            <div class="info">
+                <div class="name-row">
+                    <div class="name" id="profile-name"></div>
+                    <div class="crown-wrapper" id="badge-wrapper" style="display: none;">
+                        <img src="" id="badge-icon" class="crown-icon" alt="Badge">
+                        <div class="tooltip" id="badge-tooltip"></div>
+                    </div>
+                </div>
+                <div class="now-playing">♫ Now Playing: ^_^</div>
+            </div>
+        </div>
+
+        <div class="links" id="links-container"></div>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+</html>
